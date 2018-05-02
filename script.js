@@ -94,7 +94,7 @@ function refresh() {
         var obstacle = objects.obstacles[i];
 
         if (obstacle.x <= -obstacle.w) objects.obstacles.splice(i, 1);
-        else if (obstacle.x <= 350 + objects.stickman.width && obstacle.x >= 350 && rowY["row" + characterRow] == obstacle.y) lose();
+        else if (obstacle.x <= 350 + objects.stickman.width && obstacle.x >= 350 && rowY["row" + characterRow] == obstacle.y) var lost = true;
         else drawImage(obstacle.image, obstacle.x, obstacle.y, obstacle.w, obstacle.h);
     }
 
@@ -105,8 +105,9 @@ function refresh() {
         context.fillText(Math.round((new Date() - startTime) / 10), 10, 45);
         speed += .1;
         setTimeout(function() {
-            requestAnimationFrame(refresh)
+            requestAnimationFrame(refresh);
         }, 50);
+        if (lost == true) lose();
     }
 }
 
@@ -121,7 +122,7 @@ function start() {
 // Game over function
 function lose() {
     gameRunning = false;
-    alert("You lost");
+    alert("You lost with a score of " + Math.round((new Date() - startTime) / 10));
     location.reload();
 }
 
@@ -133,6 +134,6 @@ for (i = 0; i < imageNames.length; i++) {
 }
 refresh();
 setInterval(function() {
-    if (objects.obstacles.length < 3 && gameRunning == true) createObstacle();
-}, 3000);
+    if (objects.obstacles.length < 5 && gameRunning == true) createObstacle();
+}, 1800);
 
